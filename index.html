@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>LIFF Test</title>
+
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+</head>
+<body>
+
+<h2 id="status">Loading...</h2>
+
+<script>
+
+const LIFF_ID =
+'2010398421-C0bK9Ygg';
+
+const ZAPIER_URL =
+'https://hooks.zapier.com/hooks/catch/28029085/42dxrdz/';
+
+async function main(){
+
+  try{
+
+    document.getElementById('status').innerText =
+      'Init LIFF';
+
+    await liff.init({
+      liffId: LIFF_ID
+    });
+
+    if(!liff.isLoggedIn()){
+
+      liff.login();
+
+      return;
+
+    }
+
+    document.getElementById('status').innerText =
+      'Get Profile';
+
+    const profile =
+      await liff.getProfile();
+
+    document.getElementById('status').innerText =
+      'Save User';
+
+    await fetch(
+  ZAPIER_URL,
+  {
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify({
+      userId: profile.userId,
+      displayName: profile.displayName,
+      loyaltyStatus: 'Member'
+    })
+  }
+);
+
+    document.getElementById('status').innerText =
+      'Success\n' +
+      profile.displayName;
+
+  }
+  catch(err){
+
+    console.error(err);
+
+    document.getElementById('status').innerText =
+      err.message;
+
+  }
+
+}
+
+main();
+
+</script>
+
+</body>
+</html>
