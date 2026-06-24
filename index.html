@@ -69,12 +69,15 @@ async function main(){
   }
   catch(err){
 
-    console.error(err);
+  console.error(err);
 
-    document.getElementById('status').innerText =
-      err.message;
+  document.getElementById('status').innerText =
+    'ERROR: ' +
+    err.name +
+    '\n' +
+    err.message;
 
-  }
+}
 
 }
 
